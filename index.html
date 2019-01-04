@@ -106,6 +106,165 @@
         
           <section id="main">
   
+    <article id="post-知识表示学习研究论文总结" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/01/04/知识表示学习研究论文总结/">知识表示学习研究论文总结</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/04/知识表示学习研究论文总结/" class="article-date">
+	  <time datetime="2019-01-04T08:09:07.000Z" itemprop="datePublished">January 4, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="知识表示"><a href="#知识表示" class="headerlink" title="知识表示"></a>知识表示</h3><ul>
+<li>网络形式：节点表示实体、边表示实体间的关系（example: RDF）</li>
+<li>表示学习：语义信息表示为稠密低维实向量值</li>
+<li>知识表示学习：面向知识库的实体和关系进行表示学习</li>
+</ul>
+<blockquote>
+<p>表示学习的目的：将研究对象的语义信息表示为低维稠密向量，计算两个对象向量之间的语义相似度</p>
+</blockquote>
+<p>表示学习的应用：</p>
+<ul>
+<li>相似度计算</li>
+<li>知识图谱补全（知识库的链接）</li>
+<li>关系抽取、自动问答、实体链接</li>
+</ul>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><p>E：实体  R：关系   S:  $E<em>R</em>E$   3元组</p>
+<table>
+<thead>
+<tr>
+<th>模型名称</th>
+<th style="text-align:left">简述</th>
+<th>特点、注释、缺点</th>
+<th>损失函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>距离模型</td>
+<td style="text-align:left">每个实体用d纬向量表示，所有实体投影到d维向量空间</td>
+<td>将头向量和尾向量通过关系r的两个矩阵投影到r空间中再计算向量距离</td>
+<td>$f_r(h,t) =</td>
+<td>M_{r,1}l_h-M_{r,2}l_t</td>
+<td>_{L_1}$</td>
+</tr>
+<tr>
+<td>单层神经网络模型</td>
+<td style="text-align:left">采用单层神经网络的非线性操作来减轻距离模型无法协同精确刻画实体与关系的语义联系问题</td>
+<td>将双重模型的改进模板，提供了微弱的联系，确引入了更高的计算复杂度</td>
+<td></td>
+</tr>
+<tr>
+<td>能量模型</td>
+<td style="text-align:left">每个实体和关系都用低维向量表示</td>
+<td>两个评分函数：线性+双线性</td>
+<td></td>
+</tr>
+<tr>
+<td>双线性模型</td>
+<td style="text-align:left">刻画实体和关系之间的二阶联系，双线性评分函数</td>
+<td>通过简单的方法刻画了实体和关系的语义联系，协同性较好，计算复杂度低</td>
+<td>$f_r(h,t)={l_h}^tM_rl_t$</td>
+</tr>
+<tr>
+<td>张量神经网络模型</td>
+<td style="text-align:left">用双线性张量取代传统神经网络中的线性变换层，在不同的纬度下将头、尾实体向量联系起来。</td>
+<td>注：实体向量是该实体中所有单词向量的平均值。计算复杂度高、系数上结果差</td>
+<td></td>
+</tr>
+<tr>
+<td>矩阵分解模型</td>
+<td style="text-align:left"></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>翻译模型</td>
+<td style="text-align:left">词向量空间存在平移不变现象</td>
+<td>捕捉单词之间的隐含语义关系，简单有效，在大规模稀疏知识图谱上，性能惊人</td>
+<td>$C(king)-C(queen) \approx C(man)-C(woman)$</td>
+</tr>
+<tr>
+<td>全息表示模型</td>
+<td style="text-align:left">刚刚提出，效果未验证、值得关注</td>
+<td>注：比较详细见论文</td>
+</tr>
+</tbody>
+</table>
+<h3 id="复杂关系建模"><a href="#复杂关系建模" class="headerlink" title="复杂关系建模"></a>复杂关系建模</h3><p>翻译模型（TransE）：处理复杂关系时性能显著降低（1-N、N-1、N-N）</p>
+<p>美国-总体-奥巴马     美国-总统-布什    <strong>TransE将会把奥巴马与布什的向量变的相同</strong></p>
+<h4 id="TransH"><a href="#TransH" class="headerlink" title="TransH"></a>TransH</h4><blockquote>
+<p>让一个实体在不同的关系下拥有不同的表示</p>
+</blockquote>
+<p>对于关系r，同时用平移向量l_r和超平面法向量w_r来表示它。</p>
+<h4 id="TransR"><a href="#TransR" class="headerlink" title="TransR"></a>TransR</h4><blockquote>
+<p>一个实体是多种属性的综合体，不同关系关注实体的不同属性。</p>
+<p>不同的关系拥有不同的语义空间、对每个三元组，将实体投影到对应的关系空间中，然后再建立从头实体到尾实体的翻译关系。</p>
+</blockquote>
+<p>缺点：</p>
+<ol>
+<li>同一个关系r下，头、尾实体共享相同的投影矩阵</li>
+<li>从实体空间到关系空间的投影是实体和关系之间的交互过程，因此投影矩阵只和关系有关不合理（需要结合实体信息）</li>
+<li>复杂度太高</li>
+</ol>
+<h4 id="TransD"><a href="#TransD" class="headerlink" title="TransD"></a>TransD</h4><blockquote>
+<p>利用2个投影向量构建投影矩阵，解决TransR模型参数过多问题</p>
+</blockquote>
+<h4 id="TransA"><a href="#TransA" class="headerlink" title="TransA"></a>TransA</h4><blockquote>
+<p>将损失函数改成马氏距离，并为每一纬学习不同的权重</p>
+</blockquote>
+<h3 id="DKRL文本表示"><a href="#DKRL文本表示" class="headerlink" title="DKRL文本表示"></a>DKRL文本表示</h3><blockquote>
+<p>利用CBOW或者CNN根据实体描述文本得到实体表示，再用于TransE的目标函数学习</p>
+</blockquote>
+<p>CBOW：将文本中的词向量简单相加</p>
+<p>CNN：能够考虑文本中的次序信息</p>
+<p>可以利用TransE学习知识库中的知识表示，同时利用维基百科正文中的链接信息，让文本实体对应的词表示与知识库中的实体表示尽可能相近。</p>
+<h3 id="未来"><a href="#未来" class="headerlink" title="未来"></a>未来</h3><ul>
+<li>不同类型知识表示学习（不仅是1-N、N-N，还有树状等）</li>
+<li>多源信息融合</li>
+<li>复杂推理</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/深度学习/">深度学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/相似度计算/">相似度计算</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/知识表示方法/">知识表示方法</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-思维导图" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
@@ -594,6 +753,18 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2019/01/04/知识表示学习研究论文总结/">知识表示学习研究论文总结</a></h6>
+              <span>January 4, 2019</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/12/25/思维导图/">从wordembedding到bert 思维导图</a></h6>
               <span>December 25, 2018</span>
             </div>
@@ -645,7 +816,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/学习知识列表/">学习知识列表</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/NLP/">NLP</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/学习知识列表/">学习知识列表</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/自然语言处理/">自然语言处理</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -655,7 +826,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bert/">Bert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs231n/">cs231n</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习知识列表/">学习知识列表</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Bert/">Bert</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cs231n/">cs231n</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习知识列表/">学习知识列表</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/深度学习/">深度学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/相似度计算/">相似度计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/知识表示方法/">知识表示方法</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/神经网络/">神经网络</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -665,7 +836,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Bert/" style="font-size: 10px;">Bert</a> <a href="/tags/cs231n/" style="font-size: 10px;">cs231n</a> <a href="/tags/学习知识列表/" style="font-size: 20px;">学习知识列表</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a>
+      <a href="/tags/Bert/" style="font-size: 10px;">Bert</a> <a href="/tags/cs231n/" style="font-size: 10px;">cs231n</a> <a href="/tags/学习知识列表/" style="font-size: 20px;">学习知识列表</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/相似度计算/" style="font-size: 10px;">相似度计算</a> <a href="/tags/知识表示方法/" style="font-size: 10px;">知识表示方法</a> <a href="/tags/神经网络/" style="font-size: 10px;">神经网络</a>
     </div>
   </div>
 
@@ -675,7 +846,7 @@
     <h3 class="widget-title">Archives</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -704,7 +875,7 @@
 
   <div class="clearfix container">
       <div class="site-info">
-	      &copy; 2018 Hagrid Xu&#39;s Blog All Rights Reserved.
+	      &copy; 2019 Hagrid Xu&#39;s Blog All Rights Reserved.
         
             <span id="busuanzi_container_site_uv">
               本站访客数<span id="busuanzi_value_site_uv"></span>人次  
