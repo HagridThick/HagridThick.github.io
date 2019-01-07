@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <title>网络表示学习综述学习笔记 | Hagrid Xu&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="图论知识表示方法网络表示学习">
+  
+  
+  
+  
+  <meta name="description" content="网络表示学习综述将网络信息转化为低维稠密的实数向量，并用于已有的机器学习算法的输入 G=(V,E)   –&amp;gt; Representation Learning  –&amp;gt;Network embeddings 在网络中拓扑结构相似的节点也应该具有相近的向量表示。 基于网络结构的网格表示学习   方法 简介 优缺点     谱聚类算法 计算关系矩阵的前K个特征向量或奇异向量来得到k纬的节点表示">
+<meta name="keywords" content="图论,知识表示方法,网络表示学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络表示学习综述学习笔记">
+<meta property="og:url" content="http://yoursite.com/2019/01/07/网络表示学习综述学习笔记/index.html">
+<meta property="og:site_name" content="Hagrid Xu&#39;s Blog">
+<meta property="og:description" content="网络表示学习综述将网络信息转化为低维稠密的实数向量，并用于已有的机器学习算法的输入 G=(V,E)   –&amp;gt; Representation Learning  –&amp;gt;Network embeddings 在网络中拓扑结构相似的节点也应该具有相近的向量表示。 基于网络结构的网格表示学习   方法 简介 优缺点     谱聚类算法 计算关系矩阵的前K个特征向量或奇异向量来得到k纬的节点表示">
+<meta property="og:locale" content="chinese">
+<meta property="og:updated_time" content="2019-01-07T05:42:29.608Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络表示学习综述学习笔记">
+<meta name="twitter:description" content="网络表示学习综述将网络信息转化为低维稠密的实数向量，并用于已有的机器学习算法的输入 G=(V,E)   –&amp;gt; Representation Learning  –&amp;gt;Network embeddings 在网络中拓扑结构相似的节点也应该具有相近的向量表示。 基于网络结构的网格表示学习   方法 简介 优缺点     谱聚类算法 计算关系矩阵的前K个特征向量或奇异向量来得到k纬的节点表示">
+  
+    <link rel="alternate" href="/atom.xml" title="Hagrid Xu&#39;s Blog" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/fashion.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home">
+                <img style="margin-bottom: 10px;" width="124px" height="124px" alt="Hike News" src="https://hexo.io/logo.svg">
+              </a>
+            
+          </h1>
+          
+          
+            <div class="site-description">just another guy want to be a computer scientist</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows" style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-网络表示学习综述学习笔记" style="width: 66%; float:left;" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      网络表示学习综述学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/01/07/网络表示学习综述学习笔记/" class="article-date">
+	  <time datetime="2019-01-07T05:41:01.000Z" itemprop="datePublished">January 7, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="网络表示学习综述"><a href="#网络表示学习综述" class="headerlink" title="网络表示学习综述"></a>网络表示学习综述</h3><p>将网络信息转化为低维稠密的实数向量，并用于已有的机器学习算法的输入</p>
+<p>G=(V,E)   –&gt; Representation Learning  –&gt;Network embeddings</p>
+<p>在网络中拓扑结构相似的节点也应该具有相近的向量表示。</p>
+<h3 id="基于网络结构的网格表示学习"><a href="#基于网络结构的网格表示学习" class="headerlink" title="基于网络结构的网格表示学习"></a>基于网络结构的网格表示学习</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>简介</th>
+<th>优缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>谱聚类算法</td>
+<td>计算关系矩阵的<strong>前K个特征向量</strong>或奇异向量来得到<strong>k纬的节点表示</strong></td>
+<td>依赖于关系矩阵的构建，时间复杂度与空间复杂度较高</td>
+</tr>
+<tr>
+<td>局部线性表示</td>
+<td>一个节点与它邻居的表示都位于该流形的一个局部线性的区域. 也就是说, <strong>一个节点的表示可以通过它的邻居节点的表示的线性组合来近似得到.</strong></td>
+<td>使用邻居节点表示的加权和与中心节点表示的距离作为损失函数. <br>最小化损失函数的优化问题最终转化成某个关系矩阵特征向</td>
+</tr>
+</tbody>
+</table>
+<p>量计算问题求解. |<br>| Laplace 特征表 | 假设两个<strong>相连的节点的表示应该相近</strong>                         | 转化为 Laplace 矩阵的特征向量计算问题.                       |<br>| 有向图表示     | 扩展了 Laplace 特征表方法, 给不同点的损失函数以不同的<strong>权重</strong> |                                                              |<br>|                | <strong>模块性</strong>意味着在同一模块内节点连接紧密, 而不同模块间节点连接稀疏. | 最终该优化问题转化为了归一化的 Laplace 矩阵的特征向量计算.   |</p>
+<p> 这一类方法最主要的缺点在于复杂度: 大规模矩阵的特征向量计算是非常消耗计算时间和空间。</p>
+<h3 id="基于简单神经网络的算法"><a href="#基于简单神经网络的算法" class="headerlink" title="基于简单神经网络的算法"></a>基于简单神经网络的算法</h3><p>DeepWalk算法充分利用网络结构中的随机游走序列的信息。首先在网络上采样生成大量的随机游走序列, 然后用 Skip-gram 和 Hierarchical Softmax 模东型对随机游走序列中每个局部窗口内的节点对进行概率建模, 最大化随机游走序列的似然概率, 并最终使用随机梯度下降学习参数.</p>
+<ul>
+<li>只依赖于局部信息，适用于分布式和在线系统</li>
+<li>1对比0-1二值邻接矩阵，方差与不确定性降低</li>
+</ul>
+<p>Word2vec应用于随机游走序列</p>
+<p>一种可以适用于大规模的有向带权图的网络表示学习算法. 为了对节点间的关系进行建模, <strong>LINE算法</strong>用观察到的节点间连接刻画了第一级相似度关系, 用不直接相连的两个节点的共同邻居刻画了这两个点之间的第二级相似度关系. 直觉上说, 对直接相连的两个节点间关系的刻画等价于对原始网络的邻接矩阵的建模. 但是一个网络中的边关系往往是非常稀疏的, 所以有必要进一步刻画第二级相似度关系来考虑</p>
+<h3 id="基于矩阵分解的方法"><a href="#基于矩阵分解的方法" class="headerlink" title="基于矩阵分解的方法"></a>基于矩阵分解的方法</h3><p>给定关系矩阵, 对关系矩阵进行矩阵分解达到降维的效果, 从而得到节点的网络表示。（DeepWalk 算法实际上等价于某个特定关系矩阵的矩阵分解）</p>
+<h4 id="GraRep算法"><a href="#GraRep算法" class="headerlink" title="GraRep算法"></a>GraRep算法</h4><p>GraRep 通过 SVD 分解<strong>对该关系矩阵进行降维从而得到 k 步网络表示</strong>。对邻接矩阵 A 进行行归一化处理, 使得矩阵 A 中每行的加和等于 1. 则 GraRep 算法在计算 k 步网络表示时分解了矩阵 Ak, 该关系矩阵中的每个单元对应着两<br>个节点间通过 k 步的随机游走抵达的概率。</p>
+<p>算法框架: </p>
+<ol>
+<li>第一步构建节点间的关系矩阵,</li>
+<li>第二步对该矩阵进行矩阵分解操作得到网络表示</li>
+</ol>
+<h4 id="基于社区发现的算法"><a href="#基于社区发现的算法" class="headerlink" title="基于社区发现的算法"></a>基于社区发现的算法</h4><p>让节点表示的每一维对应该节点从属于一个社区的强度, 然后设计最优化目标进行求解.</p>
+<p>BIGCLAM 算法对网络中每条边的生成概率进行建模: 两个点的向量表示内积越大, 那么这两个点之间形成边的概率也就越高. 算法的<strong>最大化目标是整个网络结构的最大似然概率</strong>. <strong>最优化求解参数</strong>的过程由随机梯度下降算法实现.</p>
+<h4 id="保存特殊性质的网络表示"><a href="#保存特殊性质的网络表示" class="headerlink" title="保存特殊性质的网络表示"></a>保存特殊性质的网络表示</h4><blockquote>
+<p>大多数网络表示学习方法使用向量表示间的内积或者余弦距离刻画节点相似度. 但内积或者余弦距离都是无向的, 会丢失网络中的非对称性. 另一方面, 一些依赖于网络结构定义的性质, 如社区 (community)等信息, 也会在网络表示学习的过程中丢失。</p>
+</blockquote>
+<p>HOPE 算法 [21] 为每个节点刻画了两种不同的表示, 并着眼于保存原始网络中的非对称性信息.构建了不同的非对称的关系矩阵, 然后使用 JDGSVD 算法进行矩阵降维得到节点的网络表示.</p>
+<p>CNRL 算法 [22] 考虑了在节点表示中嵌入网络隐藏的社区信息. 假设每个节点属于多个社区, 也就是每个节点在所有的社区上有一个概率分布。CNRL 将网络中的社区看作文本中的主题, 也就是说, 网络中相关的节点倾向于行程社区, 而文本中相关的词则会构成主题. 因此, CNRL 算法在生成的随机游走序列上, 将每个节点序列看成一篇文档, 通过基于 Gibbs 采样的 LDA [23] 来学习每个节点的社区分布, 并通过随机采样的方式, 来给序列中的节点分配其对应的社区标签.</p>
+<h3 id="结合外部信息"><a href="#结合外部信息" class="headerlink" title="结合外部信息"></a>结合外部信息</h3><ul>
+<li>文本信息、标签分类</li>
+<li>半监督节点分类任务：一种半监督的网络表示学习方法 MMDW，会针对分类边界上的支持向量计算其偏置向量, 使其在学习过程中向正确的类别方向进行偏置, 从而增大表示向量的区分能力.</li>
+<li>结合边上的标签信息：TransNet 假设头结点表示向量加上关系表示向量等于尾节点表示向量. 其中, 通过关键词抽取、命名实体识别等方式, 对交互文本抽取出标签集合来表示关系. 随后, 通过深层自动编码器对标签集合进行压缩, 来得到关系的表示向量. 该模型能够有效地预测未标注的边上的标签集合, 在社会关系抽取任务上取得了显著的提升.</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/自然语言处理/">自然语言处理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图论/">图论</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/知识表示方法/">知识表示方法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/网络表示学习/">网络表示学习</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/01/04/知识表示学习研究论文总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">知识表示学习研究论文总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络表示学习综述"><span class="nav-number">1.</span> <span class="nav-text">网络表示学习综述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于网络结构的网格表示学习"><span class="nav-number">2.</span> <span class="nav-text">基于网络结构的网格表示学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于简单神经网络的算法"><span class="nav-number">3.</span> <span class="nav-text">基于简单神经网络的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于矩阵分解的方法"><span class="nav-number">4.</span> <span class="nav-text">基于矩阵分解的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GraRep算法"><span class="nav-number">4.1.</span> <span class="nav-text">GraRep算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于社区发现的算法"><span class="nav-number">4.2.</span> <span class="nav-text">基于社区发现的算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#保存特殊性质的网络表示"><span class="nav-number">4.3.</span> <span class="nav-text">保存特殊性质的网络表示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结合外部信息"><span class="nav-number">5.</span> <span class="nav-text">结合外部信息</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Hagrid Xu&#39;s Blog All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hipaper" target="_blank">hipaper</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
